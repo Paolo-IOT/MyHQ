@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{{% block content %}
-<form class="mio-form" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="mio-bottone" type="submit">Login</button>
-</form>
-{% endblock %}
