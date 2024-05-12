@@ -1,0 +1,555 @@
+{% extends 'base.html' %}
+{% load filtri %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+
+   <!--  <link href="{% static 'css/fontawesomefree/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/fontawesomefree/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/fontawesomefree/solid.css' %}" rel="stylesheet" type="text/css">  -->
+ 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeW7trjPGzj9C00Tu74JFl3v7WXUz0CkDIIvQ2LVnAuuK3VjpoAeflDj7J/6k" crossorigin="anonymous">
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+
+    <title>Creazione Evento</title>
+
+    <style type="text/css">
+        
+        .custom-container {
+            width: 70%; /* Larghezza fissa */
+            height: auto; /* Altezza fissa, rendendolo quadrato */
+            border: 1px solid #ddd; /* Stile border tipico di Bootstrap */
+            border-radius: 0; /* Angoli non arrotondati per un vero effetto "box" */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra per profondità */
+            padding: 15px; /* Spaziatura interna */
+            background-color: #fff; /* Sfondo bianco */
+            margin-bottom: 20px; /* Spazio sotto il container */
+            /* Centra il box nella pagina o nel contenitore padre */
+            margin-left: 180px;
+            margin-right: auto;
+        }
+
+        .custom-container.sub-objective{
+            width: 100%; /* Larghezza fissa */
+            height: auto; /* Altezza fissa, rendendolo quadrato */
+            border: 1px solid #ddd; /* Stile border tipico di Bootstrap */
+            border-radius: 0; /* Angoli non arrotondati per un vero effetto "box" */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra per profondità */
+            padding: 15px; /* Spaziatura interna */
+            background-color: #fff; /* Sfondo bianco */
+            margin-bottom: 20px; /* Spazio sotto il container */
+            /* Centra il box nella pagina o nel contenitore padre */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .custom-box {
+            width: 100%; /* Larghezza fissa */
+            height: auto; /* Altezza variabile
+            border: 1px solid #ddd; /* Stile border tipico di Bootstrap */
+            border-radius: 0; /* Angoli non arrotondati per un vero effetto "box" */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra per profondità */
+            padding: 5px; /* Spaziatura interna */
+            background-color: #fff; /* Sfondo bianco */
+            margin-bottom: 30px; /* Spazio sotto il container */
+            /* Centra il box nella pagina o nel contenitore padre */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .margine-bottom {
+            margin-bottom: 30px;
+        }
+
+        .btn-circle {
+            border-radius: 50%; /* Rende il bottone circolare */
+            width: 40px; /* Imposta la larghezza del bottone */
+            height: 40px; /* Imposta l'altezza del bottone, uguale alla larghezza per mantenere la forma circolare */
+            padding: 0; /* Rimuove il padding per far sì che l'icona si centri */
+            display: flex; /* Permette di usare justify-content e align-items per centrare l'icona */
+            justify-content: center; /* Centra l'icona orizzontalmente */
+            align-items: center; /* Centra l'icona verticalmente */
+            background-color: green; /* Colore di sfondo del bottone */
+            border: none; /* Rimuove il bordo del bottone */
+            cursor: pointer; /* Cambia il cursore in una mano per indicare che è cliccabile */
+        }
+
+        .btn-circle:hover {
+            background-color: darkgreen; /* Cambia il colore al passaggio del mouse per un feedback visivo */
+        }
+
+        #preview {
+            background-image: url('/media/mockup_smartphonre.jpg');
+            background-size: cover; /* Per adattare l'immagine al div */
+            background-position: center; /* Per centrare l'immagine nel div */
+            background-repeat: no-repeat; /* Per evitare la ripetizione dell'immagine */
+        }
+
+        #locationEvent:invalid {
+            border: 1px solid red; /* Cambia il colore del bordo in rosso */
+        }
+
+        #eventForm {
+            margin-left: 10px;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+ 
+<form id="eventForm" method="POST" enctype="multipart/form-data" action="{% url 'submit_form' %}" class="container-fluid g-3 align-items-center mb-3" novalidate>
+    {% csrf_token %}
+<!-- Riga per Nome dell'evento -->
+    <div class="row g-3 align-items-center mb-3">
+
+        <div class="col-md-2">
+             <label for="eventName" class="form-label">Nome Evento:</label>
+             <input type="text" id="eventName" name="eventName" oninput="updatePreview()" maxLength="20">
+
+            {% if error_message %}
+                <div class="alert alert-danger" role="alert">
+                  {{ error_message }}
+                </div>
+            {% endif %}
+        </div>
+
+<!-- Riga location e Date inizio e fine dell'evento -->
+        <div class="col-md-2">
+            <label for="eventName" class="form-label">Luogo evento:</label>
+            <input type="text" id="locationEvent" name="locationEvent" oninput="updatePreview()" maxlength="20">
+            
+            {% if error_message %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+            <label for="eventDate" class="form-label">Data di inizio</label>
+            <input type="date" id="eventStartDate" name="eventStartDate" class="form-control" required>
+            <div class="invalid-feedback">
+                Per favore scegli una data valida.
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label for="eventDate" class="form-label">Data di fine</label>
+            <input type="date" id="eventEndDate" name="eventEndDate" class="form-control" required>
+            <div class="invalid-feedback">
+                Per favore scegli una data valida.
+            </div>
+        </div>
+
+
+
+    <div class="col-md-4">
+        <label for="immagine">Caricare un'immagine dell'evento formato 1:1</label>
+        <input type="file" id="immagine" name="immagine" accept="image/png, image/jpeg, image/gif, image/jpg" oninput="updatePreview()">
+    </div>
+
+</div>
+
+<!-- Riga per la descrizione dell'evento -->
+<div class="col-md-4">
+        <label for="eventDescription" class="form-label">Descrizione</label>
+        <div id="editor-container"></div>
+        <input type="hidden" id="eventDescription" name="eventDescription" oninput="updatePreview()">
+        <div class="invalid-feedback">
+            {{ field.errors }}
+        </div>
+</div>
+
+<div id="dynamicFieldsContainer"></div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-3">
+        <div class="col-md-2">
+            <button type="button" onclick="addDynamicField()" class="btn btn-squared btn-success">
+                Aggiungi obiettivo
+            </button>
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="Salva" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
+<!-- DIV PREVIEW. --------------------------------->
+
+<div id="preview" style="border: solid 1px #000; width: 300px; height: 400px; margin-top: 20px; background-image: url('/media/mockup_smartphonre.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <img id="image-preview" src="" alt="Anteprima immagine" style="width: 100%; height: auto; display: none;">
+    <h3 id="previewName">Anteprima Nome Evento</h3>
+    <p id="previewDescription">Anteprima Descrizione</p>
+</div>
+
+<script>
+
+// CONTROLLO CARATTERI OLTRE I 50 nel CAMPO NOME EVENTO
+
+function updatePreview() {
+    var locationEventInput = document.getElementById('locationEvent');
+    var maxChars = 50; // Imposta il limite massimo di caratteri a 50
+
+    if (locationEventInput.value.length > maxChars) {
+        locationEventInput.value = locationEventInput.value.slice(0, maxChars);
+    }
+}
+
+
+
+function updatePreview() {
+    // Funzione per aggiornare l'anteprima, se necessario
+}
+
+
+// Un unico event listener per l'input file per gestire l'anteprima dell'immagine
+document.getElementById('immagine').addEventListener('change', function(event) {
+        var imageFile = event.target.files[0];
+        if (imageFile) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById('image-preview');
+                preview.src = e.target.result;
+                preview.style.display = 'block'; // Mostra l'immagine se precedentemente nascosta
+            };
+            reader.readAsDataURL(imageFile);
+        } else {
+            document.getElementById('image-preview').style.display = 'none'; // Nascondi l'immagine se nessun file è selezionato
+            document.getElementById('image-preview').src="{{ MEDIA_URL }}{{ airsoft.png }}";
+        }
+    });
+
+
+// AGGIORNAMENTO FINESTRA DI PREVIEW IN TEMPO REALE
+function updatePreview() {
+    var name = document.getElementById('eventName').value;
+    var description = document.getElementById('eventDescription').value;
+
+    document.getElementById('previewName').innerText = name || 'Nome Evento';
+    document.getElementById('previewDescription').innerText = description || 'Descrizione Evento';
+}
+// Aggiunge gli event listener agli input di nome e descrizione per aggiornare immediatamente le anteprime
+document.getElementById('eventName').addEventListener('input', updatePreview);
+document.getElementById('eventDescription').addEventListener('input', updatePreview);
+ 
+
+// FUNZIONE AGGIUNGI OBIETTIVO
+let fieldCounter = 0;
+
+function addDynamicField() {
+    fieldCounter++;
+    const container = document.getElementById('dynamicFieldsContainer');
+
+    const fieldDiv = document.createElement('div');
+    fieldDiv.draggable = true;
+    fieldDiv.className = 'custom-box';
+    fieldDiv.id = 'dynamicField' + fieldCounter;
+    
+    const label = document.createElement('label');
+    label.className = 'col-sm-2 control-label';
+    label.innerHTML = 'OBJ';
+
+
+    const inputsAndButtonsWrapper = document.createElement('div');
+    inputsAndButtonsWrapper.className = 'row';
+
+// CAMPO NOME - OBIETTIVO
+    const nameInputDiv = document.createElement('div');
+    nameInputDiv.className = 'col-sm-3';
+    const inputName = document.createElement('input');
+    inputName.type = 'text';
+    inputName.className = 'form-control';
+    inputName.name = 'customFieldName' + fieldCounter;
+    inputName.placeholder = 'Nome';
+    inputName.maxLength = 40;
+    nameInputDiv.appendChild(inputName);
+
+// CAMPO DESCRIZIONE - OBIETTIVO
+    const descrInputDiv = document.createElement('div');
+    descrInputDiv.className = 'col-sm-3';
+    const inputDescr = document.createElement('input');
+    inputDescr.type = 'innerText';
+    inputDescr.className = 'form-control';
+    inputDescr.name = 'customFieldName' + fieldCounter;
+    inputDescr.placeholder = 'Descrizione';
+    inputDescr.id = 'editor-container';
+    descrInputDiv.appendChild(inputDescr);
+
+// CAMPO VALORE OBIETTIVO
+    const valueInputDiv = document.createElement('div');
+    valueInputDiv.className = 'col-sm-1';
+    valueInputDiv.style.paddingLeft = '6px';
+    const inputValue = document.createElement('input');
+    inputValue.type = 'number';
+    inputValue.className = 'form-control';
+    inputValue.name = 'customFieldValue' + fieldCounter;
+    inputValue.placeholder = '00';
+    valueInputDiv.appendChild(inputValue);
+
+// Nome bottone aggiungi sotto-OBIETTIVO
+    const addSubObjectiveButtonDiv = document.createElement('div');
+    addSubObjectiveButtonDiv.className = 'col-sm-2';
+    const addSubObjectiveButton = document.createElement('button');
+    addSubObjectiveButton.className = 'btn btn-warning';
+    addSubObjectiveButton.type = 'button';
+    addSubObjectiveButton.innerText = '+ Obiettivo Interno';
+    addSubObjectiveButton.onclick = function() { addSubObjective(fieldDiv.id); };
+    addSubObjectiveButtonDiv.appendChild(addSubObjectiveButton);
+
+// CAMPO bottone rimuovi OBIETTIVO
+    const deleteButtonDiv = document.createElement('div');
+    deleteButtonDiv.className = 'col-sm-3';
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-danger';
+    deleteButton.type = 'button';
+    deleteButton.innerText = 'Rimuovi Obiettivo';
+    deleteButton.onclick = function() { removeDynamicField(fieldDiv.id); };
+    deleteButtonDiv.appendChild(deleteButton);
+
+    inputsAndButtonsWrapper.appendChild(nameInputDiv);
+    inputsAndButtonsWrapper.appendChild(valueInputDiv);
+    inputsAndButtonsWrapper.appendChild(descrInputDiv);
+    inputsAndButtonsWrapper.appendChild(addSubObjectiveButtonDiv);
+    inputsAndButtonsWrapper.appendChild(deleteButtonDiv);
+
+    fieldDiv.appendChild(label);
+    fieldDiv.appendChild(inputsAndButtonsWrapper);
+    label.innerHTML = 'OBJ ';
+    container.appendChild(fieldDiv);
+}
+
+
+// FUNZIONE RIMUOVI OBIETTIVO
+function removeDynamicField(fieldId) {
+    const fieldDiv = document.getElementById(fieldId);
+    if (fieldDiv) {
+        fieldDiv.parentNode.removeChild(fieldDiv);
+    }
+}
+
+
+// RACCOLTA DATI DAL FORM E STAMPA NELLA CONSOLE
+function submitForm() {
+    const form = document.getElementById('eventForm');
+    const formData = new FormData(form);
+    
+    let userData = {}; // Oggetto per raccogliere i dati
+
+    // Ciclo su tutti i valori in formData
+    for (let [key, value] of formData.entries()) {
+        // Aggiungi o aggiorna la proprietà nell'oggetto userData
+        if (userData[key]) {
+            // Se esiste già, e non è un array, convertilo in array
+            if (!Array.isArray(userData[key])) {
+                userData[key] = [userData[key]];
+            }
+            // Aggiungi il nuovo valore all'array
+            userData[key].push(value);
+        } else {
+            // Altrimenti, aggiungi la proprietà/value all'oggetto
+            userData[key] = value;
+        }
+    }
+}
+
+
+// GESTIONE SOTTOCAMPI
+function addSubObjective(parentId) {
+  console.log('Aggiunto un sub-obiettivo a', parentId);
+
+  const parentDiv = document.getElementById(parentId);
+  const subObjectiveCounter = parentDiv.querySelectorAll('.sub-objective').length;
+
+  const subObjectiveDiv = document.createElement('div');
+
+  const label = document.createElement('label');
+    label.className = 'col-sm-2 control-label';
+    label.innerHTML = 'Sub-OBJ ';
+
+  // caratteristiche della riga del sotto obiettivo
+  subObjectiveDiv.className = 'col-sm-11'; // Aggiunto sub-objective per tracking
+  subObjectiveDiv.style.display = 'flex'; // Assicura che il contenuto sia in colonna
+  subObjectiveDiv.style.flexDirection = 'row';
+  subObjectiveDiv.style.marginLeft = '5px';
+  subObjectiveDiv.style.marginTop = '3%';
+
+  // costruisce il contenitore
+  const inputsWrapper = document.createElement('div');
+  inputsWrapper.className = 'col-xs-4';
+  inputsWrapper.style.display = 'flex'; // Per mettere tutto sulla stessa riga
+
+  // Creazione dei div per i campi di input di nome e valore
+  const nameInputDiv = document.createElement('div');
+  nameInputDiv.className = 'col-xs-4'; // Adatta la dimensione come necessario
+  nameInputDiv.style.marginRight = '5px';
+  
+
+  //Creazione campo nome sotto obiettivo
+  const inputSubName = document.createElement('input');
+  inputSubName.type = 'text';
+  inputSubName.className = 'form-control'; // Modificato per usare una classe Bootstrap standard
+
+  inputSubName.name = parentId + '_subName' + subObjectiveCounter;
+  inputSubName.placeholder = 'Nome';
+  nameInputDiv.appendChild(inputSubName);
+
+  // campo valore
+  const valueInputDiv = document.createElement('div');
+  valueInputDiv.className = 'col-sm-2';
+  const inputSubValue = document.createElement('input');
+  inputSubValue.type = 'number';
+  inputSubValue.className = 'form-control'; // Modificato per usare una classe Bootstrap standard
+  inputSubValue.name = parentId + '_subName' + subObjectiveCounter;
+  inputSubValue.placeholder = '00';
+  valueInputDiv.appendChild(inputSubValue);
+
+  // costruzione riga
+  inputsWrapper.appendChild(label);
+  inputsWrapper.appendChild(nameInputDiv);
+  inputsWrapper.appendChild(valueInputDiv);
+
+  // Creazione del bottone di rimozione fuori dal wrapper degli input per posizionarlo sotto
+  const removeSubObjectiveButton = document.createElement('button');
+  removeSubObjectiveButton.className = 'btn btn-danger';
+  removeSubObjectiveButton.type = 'button';
+  removeSubObjectiveButton.innerText='Rimuovi Sub-OBJ'
+  removeSubObjectiveButton.style.marginLeft = '3%';
+
+  // Aggiungere l'icona al pulsante (senza testo)
+  const icon = document.createElement('i'); // Use `<i>` for Font Awesome
+  icon.className = 'fa-solid fa-trash'; // Ensure Font Awesome classes are loaded
+
+
+  //removeSubObjectiveButton.appendChild(icon);
+  removeSubObjectiveButton.onclick = function() {
+    subObjectiveDiv.parentNode.removeChild(subObjectiveDiv);
+  };
+
+  // Aggiunta di input e bottone al div principale
+  subObjectiveDiv.appendChild(inputsWrapper);
+  inputsWrapper.appendChild(removeSubObjectiveButton);
+
+  let lastChild = parentDiv.lastElementChild;
+  while (lastChild && lastChild.classList.contains('sub-objective')) {
+    lastChild = lastChild.previousElementSibling;
+  }
+  parentDiv.insertBefore(subObjectiveDiv, lastChild ? lastChild.nextSibling : null);
+}
+
+
+function removeDynamicField(fieldId) {
+  const fieldDiv = document.getElementById(fieldId);
+  if (fieldDiv) {
+    fieldDiv.parentNode.removeChild(fieldDiv);
+  }
+}
+
+
+
+// GESTIONE DRAG AND DROP
+document.addEventListener('DOMContentLoaded', (event) => {
+    const container = document.getElementById('dynamicFieldsContainer');
+
+    container.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', e.target.id);
+    });
+
+    container.addEventListener('dragover', (e) => {
+        e.preventDefault(); // Necessario per permettere il drop
+
+        let closest = null;
+        let closestDistance = Infinity;
+        const draggableElements = container.querySelectorAll('.custom-box');
+
+        draggableElements.forEach(el => {
+            const box = el.getBoundingClientRect();
+            const midPoint = box.top + (box.height / 2);
+            const distance = Math.abs(e.clientY - midPoint);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closest = el;
+            }
+        });
+
+        // Evidenzia l'elemento più vicino
+        if (closest) {
+            // Opzionale: resetta tutti gli stili prima di applicare il nuovo
+            draggableElements.forEach(el => {
+                el.style.border = ""; // Reset dello stile per tutti gli elementi
+            });
+            closest.style.border = "3px dashed #000"; // Stile per evidenziare l'elemento più vicino
+        }
+    });
+
+    container.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text');
+        const draggableElement = document.getElementById(id);
+        
+        let dropzone = null; // Inizializza la dropzone a null
+        let closestDistance = Infinity;
+        const draggableElements = container.querySelectorAll('.custom-box');
+
+        draggableElements.forEach(el => {
+            const box = el.getBoundingClientRect();
+            const midPoint = box.top + (box.height / 2);
+            const distance = Math.abs(e.clientY - midPoint);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                dropzone = el;
+            }
+        });
+
+        if (dropzone) {
+            dropzone.style.border = ""; // Reset dello stile dell'elemento dropzone
+            // Decidi se inserire l'elemento prima o dopo in base alla posizione relativa del cursore
+            const dropzoneBox = dropzone.getBoundingClientRect();
+            if (e.clientY < (dropzoneBox.top + (dropzoneBox.height / 2))) {
+                container.insertBefore(draggableElement, dropzone); // Inserisci prima se il cursore è nella metà superiore
+            } else {
+                container.insertBefore(draggableElement, dropzone.nextSibling); // Altrimenti, inserisci dopo
+            }
+        }
+    });
+
+    container.addEventListener('dragleave', (e) => {
+        if (e.target.className === 'custom-box') {
+            e.target.style.border = ""; // Reset dello stile
+        }
+    });
+});
+
+
+// EDITOR DI TESTO
+var quill = new Quill('#editor-container', {
+    theme: 'snow',
+    placeholder: 'Inserisci qui la descrizione...',
+    modules: {
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline'],
+            ['link', 'image', 'video'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [ { 'align': 'center'}, { 'align': 'right' }]
+        ]
+    }
+});
+
+quill.on('text-change', function() {
+    document.getElementById('eventDescription').value = quill.root.innerHTML;
+});
+
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+{% endblock %}
