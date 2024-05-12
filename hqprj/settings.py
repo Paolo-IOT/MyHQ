@@ -28,6 +28,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True  # I cookie di sessione devono essere inviati solo con HTTPS
+CSRF_COOKIE_SECURE = True     # Anche i cookie CSRF
+
+SECURE_HSTS_SECONDS = 31536000  # Imposta a 1 anno
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 
 # Application definition
 
@@ -140,3 +150,5 @@ LOGOUT_REDIRECT_URL = 'login'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
