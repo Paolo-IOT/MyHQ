@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HQ Manager</title>
+    
+    <link rel="stylesheet" href="{% static '/css/style.css' %}"> 
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+   
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{% url 'homepage' %}">Home</a>
+
+    {% if not user.is_authenticated %}
+    <a href="{% url 'register' %}">Crea un account</a>
+    <a href="{% url 'welcome' %}">Login</a>
+    {% endif %}
+
+    
+    <a href="#more">More</a>
+
+    {% if user.is_authenticated %}
+    <a href="{% url 'event_form' %}">Crea evento</a>
+    <a href="{% url 'events_list' %}">Elenco eventi</a>
+    <a href="{% url 'btconnex' %}">BT connex</a>
+    <a href="{% url 'fuori' %}">Logout</a>
+    <div>
+        <a href="#about">{{ user }}</a>
+    </div>
+    {% endif %}
+    
+</div>
+<main>
+    {% block content %}
+    {% endblock content %}
+</main>    
+
+<footer class="footer">
+      <p >© 2024 HQ Manager. Tutti i diritti riservati.</p>
+</footer>
+
+</body>
+</html>

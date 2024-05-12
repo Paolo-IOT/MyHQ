@@ -1,0 +1,11 @@
+{
+    "eventName": "test evento cod",
+    "eventStartDate": "2024-04-20",
+    "eventEndDate": "2024-04-21",
+    "eventDescription": "Evento con codice random",
+    "customFieldName1": "obj 1",
+    "customFieldValue1": "10",
+    "dynamicField1_subName0": "7",
+    "customFieldName2": "obj 2",
+    "customFieldValue2": "7",
+    "event_code": 

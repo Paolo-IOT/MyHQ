@@ -1,0 +1,107 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HQ Manager</title>
+    
+    <link rel="stylesheet" href="{% static '/css/style.css' %}"> 
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+.BUTTON_VMG {
+   background: #3D94F6;
+   background-image: -webkit-linear-gradient(top, #3D94F6, #1E62D0);
+   background-image: -moz-linear-gradient(top, #3D94F6, #1E62D0);
+   background-image: -ms-linear-gradient(top, #3D94F6, #1E62D0);
+   background-image: -o-linear-gradient(top, #3D94F6, #1E62D0);
+   background-image: -webkit-gradient(to bottom, #3D94F6, #1E62D0);
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   margin-top: 3%;
+   display: flex;
+   justify-content: center;
+   text-align: center;
+   border-radius: 20px;
+   height: 84px;
+   line-height: 4px;
+   color: #FFFFFF;
+   font-family: Verdana;
+   width: 199px;
+   font-size: 20px;
+   font-weight: 100;
+   padding: 40px;
+   -webkit-box-shadow: 1px 1px 20px 0 #000000;
+   -moz-box-shadow: 1px 1px 20px 0 #000000;
+   box-shadow: 1px 1px 20px 0 #000000;
+   text-shadow: 1px 1px 20px #000000;
+   border: solid #337FED 1px;
+   text-decoration: none;
+   display: inline-block;
+   cursor: pointer;
+   text-align: center;
+}
+
+.BUTTON_VMG:hover {
+   border: solid #337FED 1px;
+   background: #1E62D0;
+   background-image: -webkit-linear-gradient(top, #1E62D0, #3D94F6);
+   background-image: -moz-linear-gradient(top, #1E62D0, #3D94F6);
+   background-image: -ms-linear-gradient(top, #1E62D0, #3D94F6);
+   background-image: -o-linear-gradient(top, #1E62D0, #3D94F6);
+   background-image: -webkit-gradient(to bottom, #1E62D0, #3D94F6);
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
+   text-decoration: none;
+}
+
+</style>
+   
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{% url 'homepage' %}">Home</a>
+
+    {% if not user.is_authenticated %}
+    <a href="{% url 'register' %}">Crea un account</a>
+    <a href="{% url 'welcome' %}">Login</a>
+    <a href="#more">More</a>
+
+    {% else %}
+    <a href="{% url 'event_form' %}">Crea evento</a>
+    <a href="{% url 'events_list' %}">Elenco eventi</a>
+    <a href="{% url 'btconnex' %}">BT connex</a>
+    <a href="{% url 'fuori' %}">Logout</a>
+    <div>
+        <a href="#about">{{ user }}</a>
+    </div>
+    {% endif %}
+    
+</div>
+<div align="center" >
+    <button class="BUTTON_VMG" id="btnScansione">BT Scanner</button>
+</div>
+<br>
+
+<div align="center" >
+    <h3>Dispositivo connesso: </h3>
+    <ul id="listaDispositivi"></ul>
+</div>
+<script src="{% static 'js/bluetooth.js' %}"></script>
+
+<footer class="footer">
+      <p >© 2024 HQ Manager. Tutti i diritti riservati.</p>
+</footer>
+
+</body>
+</html>
+
+
+
+
+

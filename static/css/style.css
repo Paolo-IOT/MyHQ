@@ -1,0 +1,92 @@
+body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+        }
+
+
+.navbar {
+            overflow: hidden;
+            background-color: #1e2460;
+            padding: 20px 10px;
+        }
+
+
+.navbar a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 25px;
+            border-radius: 4px;
+        }
+
+.navbar a:hover {
+            background-color: white;
+            color: #1e2460;
+        }
+
+
+.footer  {
+
+    background-color: #1e2460;
+    color: white;
+    margin-top: 50px;
+    text-align:center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+}
+
+.titoli {
+            margin: 10px 30px;
+        }
+
+
+.mio-form p {
+            margin: 10px 30px;
+        }
+
+
+.mio-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+.mio-form input, .mio-form textarea, .mio-form select {
+            width: 30%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            box-sizing: border-box; /* Aggiunge padding all'interno del box */
+        }
+
+
+.mio-bottone {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 30px;
+        }
+
+
+.mio-bottone:hover {
+            background-color: #45a049;
+            
+        }
+
+.custom-width {
+    width: 30%; /* Imposta la larghezza al 50% del contenitore del nome e della descrizione dell'evento nel form di creazione delll'evento*/
+}
+
+/* bottone radar BT connection */
+
+
+
+        

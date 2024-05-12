@@ -1,0 +1,141 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+
+
+  <title>SoftAir Manager</title>
+  
+<style>
+
+body, html {
+  height: 100%; /* Assicura che il body e html occupino tutto lo spazio della finestra */
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Impedisce lo scroll aggiuntivo causato dall'elemento after */
+}
+
+body::after {
+  content: ""; /* Necessario per visualizzare l'elemento */
+  position: fixed; /* Si posiziona relativamente alla viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("{{ immagine_url }}") no-repeat center center fixed; 
+  background-size: cover;
+  -webkit-filter: blur(8px); /* Sfocatura per browser WebKit */
+  filter: blur(8px); /* Sfocatura standard */
+  z-index: -1; /* Posiziona lo pseudo-elemento dietro al contenuto del body */
+}
+
+.container {
+  font-family: 'Major Mono Display', monospace;
+  position: relative; /* Assicura che .container sia sopra il background sfocato */
+  max-width: 90%; /* Larghezza massima al 90% */
+  margin: 20px auto;
+  text-align: center;
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 95%; /* Larghezza massima al 95% su schermi piccoli */
+  }
+}
+
+
+h1 {
+  font-size: 3.5vw; /* Dimensione del font in base alla larghezza della viewport */
+  color: white;
+  margin-top: 20%;
+}
+
+h2 {
+  font-size: 2.5vw; /* Dimensione del font in base alla larghezza della viewport */
+  color: white;
+  margin-bottom: 20px;
+}
+
+img {
+  max-width: 100%;
+  height: auto; /* Mantiene il rapporto d'aspetto dell'immagine */
+  margin-bottom: 20px;
+}
+
+
+.area-codice {
+  margin-bottom: 20px;
+  
+}
+
+#codice-inserito {
+  width: 100%; /* Larghezza al 100% del contenitore padre */
+  max-width: 240px; /* Larghezza massima di 240px */
+  height: 40px; /* Altezza fissa (opzionale - puoi rimuoverla) */
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-family: monospace;
+  text-align: center;
+  font-size: 1.5rem; /* Dimensione del font in base alla rems */
+  line-height: 1.5; /* Altezza della riga in base al font-size */
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
+  background-color: #f0f0f0; /* Colore di sfondo per indicare che è disabilitato */
+  resize: none; /* Impedisce il ridimensionamento del campo di testo */
+  cursor: default; /* Cursore di default per indicare che non è modificabile */
+}
+
+
+#btn-verifica {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+  <div class="container">
+    <h1>SoftAir Manager</h1>
+    <br>
+    <div class="area-codice">
+        <h2>Inserisci il codice</h2>
+         <input id="codice-inserito" maxlength="6"></input>
+        <br>
+        <br>
+        <button id="btn-verifica">Verifica codice</button>
+      </div>
+    </div>
+
+  </div>
+<script type="text/javascript">
+
+const btnVerifica = document.getElementById('btn-verifica');
+const codiceInserito = document.getElementById('codice-inserito');
+
+btnVerifica.addEventListener('click', function() {
+  const codice = codiceInserito.value;
+
+  // Controlla se il codice è corretto
+  if (codice === "qwerty") {
+    // Reindirizza alla homepage
+    window.location.href = "{% url 'homepage' %}";
+  } else {
+    alert("Codice errato. Riprova.");
+  }
+});
+
+</script>
+
+</body>
+</html>
